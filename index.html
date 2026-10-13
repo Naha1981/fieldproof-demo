@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GTG Field Evidence Check - Demonstration</title>
+<style>
+:root{--navy:#0b2a3d;--teal:#0f766e;--ink:#1c2b36;--mut:#5d6f7c;--line:#d7e0e6;--bg:#f3f6f8;--warn:#b45309;--blk:#b91c1c;--ok:#15803d;--hl:#fde68a}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 -apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+.top{background:#071b29;color:#9fb6c4;font-size:12px;padding:6px 20px;display:flex;gap:18px;flex-wrap:wrap;letter-spacing:.03em}
+.hd{background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.hd b{letter-spacing:.06em;font-size:20px}.hd small{display:block;color:#9fb6c4;font-size:12px}.hd .t{flex:1;font-size:17px;font-weight:600}
+.badge{border:1px solid #f59e0b;color:#fcd34d;font-size:11px;padding:4px 8px;border-radius:4px;text-align:center}
+.demo{background:#7c2d12;color:#fff;text-align:center;font-weight:700;font-size:12.5px;padding:6px;letter-spacing:.04em}
+.motto{background:#fff;border-bottom:1px solid var(--line);padding:10px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px}
+.motto .s{background:#e6f2f1;color:var(--teal);padding:3px 9px;border-radius:99px;font-weight:600}.motto .a{color:var(--mut)}
+.bar{padding:10px 20px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.bar span{font-size:12px;color:var(--mut);margin-right:4px}
+button{font:inherit;font-size:13px;border:1px solid var(--line);background:#fff;padding:6px 11px;border-radius:6px;cursor:pointer;color:var(--ink)}button:hover{border-color:var(--teal)}
+button.p{background:var(--teal);color:#fff;border-color:var(--teal)}button:disabled{opacity:.45;cursor:not-allowed}
+.wrap{display:grid;grid-template-columns:minmax(380px,1fr) minmax(420px,1.25fr);gap:16px;padding:0 20px 28px;align-items:start}
+@media(max-width:980px){.wrap{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.card h3{margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--teal)}.card .sub{color:var(--mut);font-size:12.5px;margin-bottom:8px}
+.ed{position:relative;height:430px;border:1px solid var(--line);border-radius:6px;background:#fbfcfd;font:12.5px/20px ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
+.ed .gut,.ed .bk,.ed textarea{position:absolute;top:0;margin:0;font:inherit;line-height:20px;white-space:pre}
+.gut{left:0;width:38px;height:100%;background:#eef3f6;color:#8aa0ad;text-align:right;padding:6px 6px 0 0;overflow:hidden;border-right:1px solid var(--line)}
+.bk{left:38px;right:0;height:100%;overflow:hidden;padding:6px 0 0 0;pointer-events:none}
+.bk div{height:20px;color:transparent;padding-left:8px;white-space:pre}.bk .on{background:var(--hl)}.bk .fl{box-shadow:inset 3px 0 0 var(--warn);background:#fff7ed}.bk .bl{box-shadow:inset 3px 0 0 var(--blk);background:#fef2f2}
+.ed textarea{left:38px;right:0;width:calc(100% - 38px);height:100%;border:0;background:transparent;padding:6px 0 0 8px;resize:none;outline:none;color:var(--ink);overflow:auto}
+.flag{border-left:4px solid var(--warn);background:#fffbeb;padding:8px 10px;border-radius:0 6px 6px 0;margin:7px 0;font-size:13.5px}
+.flag.block{border-color:var(--blk);background:#fef2f2}.flag.info{border-color:#64748b;background:#f1f5f9}
+.flag b{display:block}.flag .lk{font-size:12px;color:var(--mut);margin-top:3px}.flag label{font-size:12px;color:var(--mut);display:block;margin-top:4px}
+.lnk{color:var(--teal);cursor:pointer;text-decoration:underline;margin-right:6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:11.5px;padding:2px 8px;border-radius:99px;background:#eef3f6;color:var(--mut)}.chip.ok{background:#e7f6ec;color:var(--ok)}.chip.f{background:#fff1dc;color:var(--warn)}.chip.b{background:#fde4e4;color:var(--blk)}.chip.i{background:#e8edf2;color:#475569}
+.stamp{display:inline-block;border:2px solid var(--blk);color:var(--blk);font-weight:800;font-size:12.5px;padding:3px 9px;letter-spacing:.05em;border-radius:4px}.stamp.ok{border-color:var(--ok);color:var(--ok)}
+.rep{font-size:14.5px}.rep h4{margin:14px 0 4px;font-size:14px;border-bottom:1px solid var(--line);padding-bottom:2px}
+.rep table{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0}.rep th,.rep td{border:1px solid var(--line);padding:4px 8px;text-align:right}.rep th{background:#eef3f6;text-align:right}.rep td:first-child,.rep th:first-child{text-align:left}
+.rep tr.x td{color:#8a97a1;text-decoration:line-through}
+.ref{background:#e6f2f1;border-bottom:2px solid var(--teal);cursor:pointer;padding:0 2px;border-radius:2px}.ref:hover,.ref.sel{background:var(--hl)}
+.ph{color:var(--mut);font-style:italic;border:1px dashed var(--line);padding:6px 8px;border-radius:6px;margin-top:8px}
+.trace{background:#0b2a3d;color:#e6f2f1;border-radius:8px;padding:9px 12px;font-size:13px;margin:8px 0;min-height:40px}.trace code{color:#fcd34d}
+table.ev{border-collapse:collapse;width:100%;font-size:12.5px}.ev td{border-bottom:1px solid var(--line);padding:3px 6px;vertical-align:top}.ev td:first-child{color:var(--mut);width:34%}
+.chg{font-size:13px}.chg div{padding:2px 0}.up{color:var(--blk)}.dn{color:var(--teal)}
+input[type=text]{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;width:100%;margin:4px 0}
+@keyframes fl{0%{background:#fde047;box-shadow:0 0 0 4px #fde047}100%{background:transparent;box-shadow:0 0 0 0 transparent}}
+@keyframes pop{0%{transform:scale(.985);opacity:.3}100%{transform:none;opacity:1}}
+.flash{animation:fl 2.2s ease-out}.new{animation:pop .5s ease-out}.newtag{display:inline-block;background:#b45309;color:#fff;font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:4px;margin-right:6px;letter-spacing:.05em}
+.scn{display:flex;gap:8px;flex-wrap:wrap;padding:0 20px 10px}
+.scn button{text-align:left;max-width:215px;padding:8px 10px;line-height:1.3;flex:1 1 170px}.scn button b{display:block;font-size:11px;color:var(--teal);letter-spacing:.06em;text-transform:uppercase}.scn button span{display:block;font-size:13px;font-weight:600}.scn button i{display:block;font-size:11.5px;color:var(--mut);font-style:normal;margin-top:2px}
+.scn button.on{background:#0b2a3d;border-color:#0b2a3d;color:#fff;box-shadow:0 0 0 3px #fde047}.scn button.on b,.scn button.on i{color:#fde68a}
+.step{margin:0 20px 14px;background:#0b2a3d;color:#fff;border-radius:10px;padding:14px 18px;border-left:8px solid #fde047}
+.step h2{margin:0;font-size:19px}.step p{margin:4px 0 0;color:#cfe3ea;font-size:14px}.step .cg{margin-top:10px;background:#fff;color:var(--ink);border-radius:8px;padding:8px 12px;font-size:14px}.step .cg b.h{display:block;font-size:11px;letter-spacing:.08em;color:var(--teal);margin-bottom:2px}.step .cg div{padding:2px 0}
+footer{padding:14px 20px 28px;color:var(--mut);font-size:12px}
+details summary{cursor:pointer;color:var(--teal);font-size:13px}
+</style></head><body>
+<div class="top"><span>GTG Group - Demonstration</span><span>South African borehole / hydrogeology workflow</span><span>Fictional data only</span></div>
+<div class="hd"><div><b>GTG GROUP</b><small>Precision - Sustainability - Groundbreaking Solutions</small></div><div class="t">Field Evidence Check</div><div class="badge">DEMONSTRATION DATA<br>NOT GTG CUSTOMER DATA</div></div>
+<div class="demo">DEMONSTRATION - FICTIONAL DATA - NOTHING IS CONNECTED TO GTG SYSTEMS - NO REAL MESSAGES ARE SENT</div>
+<div class="motto"><span class="s">The system prepares</span><span class="a">field notes - structured evidence - checks - draft section</span><span class="s" style="background:#fdeccf;color:#92400e">The professional decides</span><span class="a">interpretation - recommendation - approval</span></div>
+<div class="bar"><span><b>Walk through the story:</b> click a step. Each one edits the technician's notes and the whole page recalculates.</span></div><div class="scn" id="scen"></div><div class="step" id="step"></div>
+<div class="wrap"><div>
+ <div class="card"><h3>1. Technician field notes (editable)</h3><div class="sub">Type or paste. Everything on the right is recalculated from these lines. Click a line number area or any highlighted figure to trace it.</div>
+  <div class="ed"><div class="gut" id="gut"></div><div class="bk" id="bk"></div><textarea id="ta" spellcheck="false" wrap="off"></textarea></div>
+  <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap"><button id="reset">Reset to original notes</button><span class="chip" id="cnt"></span></div></div>
+ <div class="card"><h3>What changed since the original notes</h3><div class="sub">Compared live against the original fixture.</div><div class="chg" id="chg"></div></div>
+ <div class="card"><h3>Extracted evidence</h3><div class="sub">What the parser read from each line. Nothing is typed in by hand.</div><div id="evid"></div></div>
+</div><div>
+ <div class="card"><h3>2. Deterministic checks</h3><div class="sub" id="chsub"></div><div class="chips" id="chips"></div><div id="flags"></div></div>
+ <div class="card"><h3>3. Draft report section</h3><div style="margin-bottom:6px"><span class="stamp" id="stamp"></span></div>
+  <div class="trace" id="trace">Click any highlighted figure to see the source line(s) and the arithmetic.</div>
+  <div class="rep" id="rep"></div></div>
+ <div class="card"><h3>4. Scientist review gate</h3><div class="sub">The draft cannot be marked reviewed while there are blocking flags, unacknowledged warnings or no named reviewer. Any edit to the notes withdraws a review.</div><div id="gate"></div></div>
+</div></div>
+<footer>Prepared by NahaLabs - demonstration only. This tool arranges and checks recorded field data. It does not interpret hydrogeology, predict yield or groundwater presence, or replace SANS 10299 methods and professional sign-off. Calculation shown: drawdown = recorded water level minus recorded static water level.</footer>
+<script>
+/* GTG field-evidence engine. Pure functions, no DOM. Every value derived from input text. */
+function analyse(text){
+  const raw=String(text||'').split(/\r?\n/);
+  const L=raw.map((t,i)=>({n:i+1,t:t.trim(),raw:t}));
+  const N=s=>parseFloat(String(s).replace(',','.'));
+  const ev={site:null,gps:null,borehole:null,strikes:[],casing:null,swl:null,pump:null,rateChanges:[],stop:null,tech:null};
+  const readings=[]; const unparsed=[]; const boreholes=[]; let phase='pumping'; let badUnits=[]; let order=0;
+  for(const {n,t} of L){
+    if(!t) continue; let m;
+    if(/\b(ft|feet|foot|inch|inches|gpm|usgal)\b/i.test(t)){ badUnits.push(n); }
+    if((m=t.match(/^site\s*:\s*(.+)$/i))){ ev.site={v:m[1],l:n}; continue; }
+    if(/^gps\b/i.test(t)){ const c=t.match(/(-?\d+(?:[.,]\d+)?)[\s,;]+(-?\d+(?:[.,]\d+)?)/); if(c) ev.gps={lat:N(c[1]),lon:N(c[2]),latT:c[1],lonT:c[2],l:n}; else unparsed.push({n,t}); continue; }
+    if(/^borehole\b/i.test(t)){ const id=(t.match(/^borehole\s+([A-Za-z0-9_\-]+)/i)||[])[1]; const d=t.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); const dep=t.match(/depth\s+(\d+(?:[.,]\d+)?)\s*(m|ft)?/i); const meth=t.match(/([A-Za-z]+)\s+drilled/i);
+      boreholes.push({id,l:n}); if(!ev.borehole) ev.borehole={id,method:meth&&meth[1],drilled:d?{d:+d[1],m:+d[2],y:+d[3],s:d[0]}:null,depth:dep?N(dep[1]):null,l:n}; continue; }
+    if(/^water strikes?\b/i.test(t)){ const re=/(\d+(?:[.,]\d+)?)\s*m\b\s*(?:\(([^)]*)\))?/g; let s; while((s=re.exec(t))){ const r=(s[2]||'').match(/(\d+(?:[.,]\d+)?)\s*L\/s/i); ev.strikes.push({depth:N(s[1]),rate:r?N(r[1]):null,rateT:r&&r[1],note:s[2]||'',l:n}); } continue; }
+    if(/^casing\b/i.test(t)){ const dm=t.match(/(\d+)\s*mm/); const mat=t.match(/mm\s+([A-Za-z]+)/); const dp=t.match(/to\s+(\d+(?:[.,]\d+)?)\s*m/i); ev.casing={dia:dm&&+dm[1],mat:mat&&mat[1],depth:dp?N(dp[1]):null,uncertain:/\?|uncertain|approx|unsure/i.test(t),l:n}; continue; }
+    if(/^(static water level|swl)\b/i.test(t)){ const v=t.match(/(\d+(?:[.,]\d+)?)\s*(m|ft)?/); const datum=t.match(/\b(below\s+(?:top of casing|ground(?: level)?|collar|datum)|mbgl|mbtoc|bgl|btoc|toc|agl)\b/i); if(v) ev.swl={v:N(v[1]),datum:datum?datum[1]:null,l:n,text:v[1]}; else unparsed.push({n,t}); continue; }
+    if(/^pump test\b/i.test(t)){ const d=t.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); const st=t.match(/start\s+(\d{1,2}):(\d{2})/i); const ps=t.match(/pump set at\s+(\d+(?:[.,]\d+)?)\s*m/i); const r=t.match(/start rate\s+(\d+(?:[.,]\d+)?)\s*L\/s/i);
+      ev.pump={date:d?{d:+d[1],m:+d[2],y:+d[3],s:d[0]}:null,start:st?{h:+st[1],mi:+st[2],s:st[1]+':'+st[2]}:null,depth:ps?N(ps[1]):null,rate:r?N(r[1]):null,rateT:r&&r[1],l:n}; continue; }
+    if(/^rate changed?\b/i.test(t)){ const r=t.match(/to\s+(\d+(?:[.,]\d+)?)\s*L\/s/i); const tm=t.match(/at\s+(\d+(?:[.,]\d+)?)\s*min/i); ev.rateChanges.push({rate:r?N(r[1]):null,rateT:r&&r[1],t:tm?N(tm[1]):null,uncertain:/\?|uncertain|unsure/i.test(t),l:n}); continue; }
+    if((m=t.match(/^stopp?ed\s+(\d{1,2}):(\d{2})/i))){ ev.stop={h:+m[1],mi:+m[2],s:m[1]+':'+m[2],l:n}; continue; }
+    if(/^recovery\b/i.test(t)){ phase='recovery'; continue; }
+    if(/^elapsed\b/i.test(t)){ continue; }
+    if((m=t.match(/^technician\s*:\s*(.+)$/i))){ ev.tech={v:m[1],l:n}; continue; }
+    if((m=t.match(/^(\d+(?:[.,]\d+)?)\s*(?:min)?[\s,;\t]+(\d+(?:[.,]\d+)?)\s*(?:m|ft)?\s*$/i))){ readings.push({phase,t:N(m[1]),wl:N(m[2]),l:n,order:order++,txt:t}); continue; }
+    unparsed.push({n,t});
+  }
+  const flags=[]; const checks=[];
+  function chk(id,label,fail,flag){ if(fail){ flags.push(Object.assign({id,label},flag)); checks.push({id,label,status:'flag',sev:flag.sev}); } else checks.push({id,label,status:'pass'}); }
+  const pump=readings.filter(r=>r.phase==='pumping'), rec=readings.filter(r=>r.phase==='recovery');
+  // group by time
+  function group(rs){ const g=new Map(); rs.forEach(r=>{ if(!g.has(r.t)) g.set(r.t,[]); g.get(r.t).push(r); }); return g; }
+  const pg=group(pump), rg=group(rec);
+  function dupInfo(g,label){ const out=[]; g.forEach((rs,t)=>{ if(rs.length>1){ const levels=[...new Set(rs.map(r=>r.wl))]; out.push({t,rows:rs,conflict:levels.length>1}); } }); return out; }
+  const pd=dupInfo(pg,'pumping'), rd=dupInfo(rg,'recovery');
+  const dupAll=pd.concat(rd);
+  const ident=dupAll.filter(d=>!d.conflict), conf=dupAll.filter(d=>d.conflict);
+  // mark readings
+  readings.forEach(r=>{ r.status='valid'; });
+  dupAll.forEach(d=>{ d.rows.forEach((r,i)=>{ r.status=d.conflict?'conflict':(i===0?'valid':'duplicate'); }); });
+  const valid=(rs)=>rs.filter(r=>r.status==='valid').sort((a,b)=>a.t-b.t);
+  const pv=valid(pump), rv=valid(rec);
+  const swl=ev.swl?ev.swl.v:null;
+  // checks
+  chk('units','Metric units throughout',badUnits.length>0,{sev:'block',title:'Non-metric unit found',detail:'Line(s) mention ft/feet or other non-metric units. The tool does not convert; calculations are withheld until the notes are in metres and L/s.',lines:badUnits});
+  chk('swl','Static water level recorded',!ev.swl,{sev:'block',title:'Static water level missing',detail:'No static water level line was found, so drawdown cannot be calculated.',lines:[]});
+  chk('datum','Water-level datum stated',ev.swl&&!ev.swl.datum,{sev:'warn',title:'Water-level reference datum not stated',detail:'The static water level has no datum (for example below top of casing, or below ground level). Levels are reported as recorded; no datum is assumed.',lines:ev.swl?[ev.swl.l]:[]});
+  chk('readings','Pumping readings present',pump.length===0,{sev:'block',title:'No pumping readings found',detail:'No "elapsed minutes, water level" rows were found in the pumping phase. Nothing can be calculated.',lines:[]});
+  chk('multi','Single borehole in record',boreholes.length>1,{sev:'block',title:'More than one borehole in the notes',detail:'Borehole lines: '+boreholes.map(b=>b.id).join(', ')+'. This demo handles one borehole per record; split the notes before use.',lines:boreholes.map(b=>b.l)});
+  chk('dupident','No repeated identical readings',ident.length>0,{sev:'warn',title:'Repeated identical reading(s)',detail:ident.map(d=>`${d.rows[0].phase[0].toUpperCase()+d.rows[0].phase.slice(1)} reading at ${d.t} min recorded ${d.rows.length} times with the same level (${d.rows[0].wl} m). First entry kept, the repeat is excluded from calculations.`).join(' '),lines:[].concat(...ident.map(d=>d.rows.map(r=>r.l)))});
+  chk('dupconf','No conflicting readings at one time',conf.length>0,{sev:'block',title:'Conflicting readings at the same time',detail:conf.map(d=>`${d.rows[0].phase} ${d.t} min has different levels (${d.rows.map(r=>r.wl).join(' vs ')} m). Neither is used; the technician must confirm.`).join(' '),lines:[].concat(...conf.map(d=>d.rows.map(r=>r.l)))});
+  const inOrder=readings.every((r,i)=>{ const prev=readings.slice(0,i).filter(p=>p.phase===r.phase).pop(); return !prev||prev.t<=r.t; });
+  chk('order','Readings in time order',!inOrder,{sev:'info',title:'Readings not in time order in the notes',detail:'Rows are sorted by elapsed time before calculating. The final reading is the one with the greatest elapsed time, not the last line of the file.',lines:[]});
+  const bad=unparsed.filter(u=>/^\d/.test(u.t)||/^[\d.,\s\-?]+/.test(u.t)&&/\d/.test(u.t));
+  chk('malformed','Every numeric line understood',bad.length>0,{sev:'warn',title:'Line(s) with numbers could not be read',detail:'These lines were not used in any calculation: '+bad.map(b=>`L${b.n} "${b.t}"`).join('; ')+'.',lines:bad.map(b=>b.n)});
+  const other=unparsed.filter(u=>!bad.includes(u));
+  chk('unparsed','All other lines recognised',other.length>0,{sev:'info',title:'Line(s) not interpreted',detail:other.map(b=>`L${b.n} "${b.t}"`).join('; ')+'. Kept as source text only.',lines:other.map(b=>b.n)});
+  chk('site','Site named',!ev.site,{sev:'warn',title:'Site not stated',detail:'No "Site:" line found.',lines:[]});
+  const gpsBad=ev.gps&&!(ev.gps.lat<=-21&&ev.gps.lat>=-35&&ev.gps.lon>=16&&ev.gps.lon<=33.5);
+  chk('gps','GPS present and inside South Africa',!ev.gps||gpsBad,{sev:'warn',title:ev.gps?'GPS outside South Africa':'GPS not recorded',detail:ev.gps?`Coordinates ${ev.gps.lat}, ${ev.gps.lon} are outside the expected South African range (check sign or order).`:'No GPS line found.',lines:ev.gps?[ev.gps.l]:[]});
+  chk('bhid','Borehole identified with depth',!ev.borehole||ev.borehole.depth==null||!ev.borehole.id,{sev:'warn',title:'Borehole ID or depth missing',detail:'Borehole line is missing or lacks an ID or "depth N m".',lines:ev.borehole?[ev.borehole.l]:[]});
+  const bd=ev.borehole&&ev.borehole.depth;
+  chk('casing','Casing entry certain',ev.casing&&ev.casing.uncertain,{sev:'warn',title:'Casing entry marked uncertain',detail:'The technician marked the casing details with a question mark or similar. Confirm before reporting.',lines:ev.casing?[ev.casing.l]:[]});
+  chk('casingdepth','Casing no deeper than borehole',ev.casing&&ev.casing.depth!=null&&bd!=null&&ev.casing.depth>bd,{sev:'warn',title:'Casing deeper than borehole',detail:'Casing depth exceeds the recorded borehole depth.',lines:ev.casing?[ev.casing.l,ev.borehole.l]:[]});
+  const nr=ev.strikes.filter(s=>s.rate==null);
+  chk('strikerate','Every water strike has a rate',nr.length>0,{sev:'warn',title:'Water strike without a recorded rate',detail:nr.map(s=>`Strike at ${s.depth} m has no rate recorded.`).join(' ')+' It will not be reported as a yield.',lines:[...new Set(nr.map(s=>s.l))]});
+  const deep=ev.strikes.filter(s=>bd!=null&&s.depth>bd);
+  chk('strikedepth','Water strikes within borehole depth',deep.length>0,{sev:'warn',title:'Water strike deeper than the borehole',detail:deep.map(s=>`${s.depth} m vs depth ${bd} m.`).join(' '),lines:[...new Set(deep.map(s=>s.l))]});
+  chk('pumpmeta','Pump test details complete',!ev.pump||!ev.pump.date||!ev.pump.start||ev.pump.depth==null,{sev:'warn',title:'Pump test header incomplete',detail:'Missing: '+(ev.pump?[!ev.pump.date&&'date',!ev.pump.start&&'start time',ev.pump.depth==null&&'pump set depth'].filter(Boolean).join(', '):'whole "Pump test" line')+'.',lines:ev.pump?[ev.pump.l]:[]});
+  chk('startrate','Start pumping rate recorded',!ev.pump||ev.pump.rate==null,{sev:'warn',title:'Start pumping rate not recorded',detail:'No "start rate N L/s" found. Rate is needed to interpret drawdown.',lines:ev.pump?[ev.pump.l]:[]});
+  const rcInc=ev.rateChanges.filter(r=>r.rate==null||r.t==null);
+  chk('rcinc','Rate changes complete (new rate and time)',rcInc.length>0,{sev:'warn',title:'Rate change missing its rate or time',detail:'The rate-change entry does not give both a new rate and an elapsed time.',lines:rcInc.map(r=>r.l)});
+  const rcU=ev.rateChanges.filter(r=>r.uncertain);
+  chk('rcunc','Rate changes certain',rcU.length>0,{sev:'warn',title:'Rate change marked uncertain',detail:rcU.map(r=>`Rate change${r.rate!=null?' to '+r.rate+' L/s':''}${r.t!=null?' at '+r.t+' min':''} is marked uncertain by the technician. Readings from that time on may not be at the start rate.`).join(' '),lines:rcU.map(r=>r.l)});
+  chk('rcvar','Constant rate for whole test',ev.rateChanges.length>0,{sev:'info',title:'Rate changed during the test',detail:'The drawdown figures span a recorded rate change, so they are not from a single constant-rate test. Interpretation is for the professional.',lines:ev.rateChanges.map(r=>r.l)});
+  const lastT=pv.length?pv[pv.length-1].t:null;
+  chk('stop','Stop time present',!ev.stop,{sev:'warn',title:'Stop time not recorded',detail:'No "Stopped HH:MM" line found.',lines:[]});
+  let dur=null;
+  if(ev.pump&&ev.pump.start&&ev.stop){ dur=(ev.stop.h*60+ev.stop.mi)-(ev.pump.start.h*60+ev.pump.start.mi); }
+  chk('dur','Stop time agrees with last reading',dur!=null&&(dur<=0||(pump.length&&Math.max(...pump.map(r=>r.t))!==dur)),{sev:'warn',title:dur!=null&&dur<=0?'Stop time is not after start time':'Stop time does not match last reading',detail:dur!=null&&dur<=0?`Start ${ev.pump.start.s}, stop ${ev.stop.s}.`:`Start ${ev.pump&&ev.pump.start&&ev.pump.start.s} to stop ${ev.stop&&ev.stop.s} is ${dur} min; the last pumping reading is at ${pump.length?Math.max(...pump.map(r=>r.t)):'-'} min.`,lines:ev.stop?[ev.stop.l].concat(ev.pump?[ev.pump.l]:[]):[]});
+  const rcLate=ev.rateChanges.filter(r=>r.t!=null&&pump.length&&r.t>Math.max(...pump.map(x=>x.t)));
+  chk('rclate','Rate change inside the test period',rcLate.length>0,{sev:'warn',title:'Rate change after the last reading',detail:'Recorded rate change time is later than any pumping reading.',lines:rcLate.map(r=>r.l)});
+  const pdate=ev.pump&&ev.pump.date, ddate=ev.borehole&&ev.borehole.drilled;
+  const dnum=d=>d.y*10000+d.m*100+d.d;
+  chk('dates','Pump test after drilling date',pdate&&ddate&&dnum(pdate)<dnum(ddate),{sev:'warn',title:'Pump test dated before drilling',detail:`Drilled ${ddate&&ddate.s}, pump test ${pdate&&pdate.s}.`,lines:[ev.borehole&&ev.borehole.l,ev.pump&&ev.pump.l].filter(Boolean)});
+  const maxWl=pump.length?Math.max(...pump.map(r=>r.wl)):null;
+  chk('dry','Water level above pump and borehole bottom',(ev.pump&&ev.pump.depth!=null&&maxWl!=null&&maxWl>=ev.pump.depth)||(bd!=null&&maxWl!=null&&maxWl>=bd),{sev:'block',title:'Recorded water level at or below pump / borehole depth',detail:`Deepest recorded level ${maxWl} m vs pump set ${ev.pump&&ev.pump.depth} m and borehole depth ${bd} m. A reading or entry is likely wrong.`,lines:pump.filter(r=>r.wl===maxWl).map(r=>r.l)});
+  const above=swl!=null?pump.filter(r=>r.t>0&&r.wl<swl&&r.status==='valid'):[];
+  chk('above','Pumping levels not above static level',above.length>0,{sev:'warn',title:'Level above static water level while pumping',detail:above.map(r=>`${r.t} min: ${r.wl} m < SWL ${swl} m`).join('; ')+'.',lines:above.map(r=>r.l)});
+  const t0=pump.filter(r=>r.t===0&&swl!=null&&r.wl!==swl);
+  chk('t0','Reading at 0 min equals static level',t0.length>0,{sev:'warn',title:'0 min reading differs from static level',detail:t0.map(r=>`${r.wl} m vs SWL ${swl} m`).join('; '),lines:t0.map(r=>r.l).concat(ev.swl?[ev.swl.l]:[])});
+  const rises=[]; for(let i=1;i<pv.length;i++) if(pv[i].wl<pv[i-1].wl) rises.push([pv[i-1],pv[i]]);
+  chk('rise','Drawdown does not reverse',rises.length>0,{sev:'warn',title:'Water level rose during pumping',detail:rises.map(([a,b])=>`${a.t} min ${a.wl} m then ${b.t} min ${b.wl} m`).join('; ')+'. Could be a rate change or a mis-keyed value.',lines:[].concat(...rises.map(([a,b])=>[a.l,b.l]))});
+  const drops=[]; for(let i=1;i<rv.length;i++) if(rv[i].wl>rv[i-1].wl) drops.push([rv[i-1],rv[i]]);
+  chk('recdir','Recovery levels move toward static level',drops.length>0,{sev:'warn',title:'Recovery level went deeper',detail:drops.map(([a,b])=>`${a.t} min ${a.wl} m then ${b.t} min ${b.wl} m`).join('; '),lines:[].concat(...drops.map(([a,b])=>[a.l,b.l]))});
+  chk('norec','Recovery readings present',rec.length===0,{sev:'info',title:'No recovery readings',detail:'No recovery phase rows found.',lines:[]});
+  // calculations
+  const blocked=flags.some(f=>f.sev==='block'&&['units','swl','readings','multi'].includes(f.id));
+  const fdp=Math.max(0,...[...pump.map(r=>(String(r.txt).split(/\s+/)[1]||'').split(/[.,]/)[1]?.length||0),ev.swl?((ev.swl.text.split(/[.,]/)[1]||'').length):0]);
+  const sub=(a,b)=>Math.round((a-b)*1e6)/1e6;
+  const calc={dp:fdp,sub};
+  calc.maxT=pump.length?Math.max(...pump.map(r=>r.t)):null;
+  const finalConflicted=pump.length&&conf.some(d=>d.rows[0].phase==='pumping'&&d.t===calc.maxT);
+  if(!blocked&&pv.length&&!finalConflicted){ const f=pv[pv.length-1]; calc.final={reading:f,drawdown:sub(f.wl,swl)}; }
+  else if(finalConflicted){ flags.push({id:'finalwithheld',label:'Final drawdown',sev:'block',title:'Final drawdown withheld',detail:`The reading at the final elapsed time (${calc.maxT} min) is in conflict, so using an earlier reading as "final" would mislead.`,lines:conf.filter(d=>d.t===calc.maxT&&d.rows[0].phase==='pumping')[0].rows.map(r=>r.l)}); }
+  calc.rows=pv.map(r=>({r,dd:(!blocked&&swl!=null)?sub(r.wl,swl):null}));
+  if(!blocked&&calc.rows.length){ calc.max=calc.rows.reduce((a,b)=>b.dd>a.dd?b:a); }
+  if(!blocked&&rv.length){ const l=rv[rv.length-1]; calc.residual={reading:l,value:sub(l.wl,swl)}; if(calc.max&&calc.max.dd>0) calc.residual.pct=Math.round(calc.residual.value/calc.max.dd*100); }
+  if(calc.residual&&calc.residual.value>0.05){ flags.push({id:'recincomplete',label:'Recovery',sev:'info',title:'Recovery incomplete at last reading',detail:`Level at ${calc.residual.reading.t} min is ${calc.residual.value} m below the static level${calc.residual.pct!=null?` (${calc.residual.pct}% of maximum drawdown)`:''}. Whether this matters is for the professional.`,lines:[calc.residual.reading.l,ev.swl.l]}); checks.push({id:'recincomplete',label:'Recovery back to static level',status:'flag',sev:'info'}); } else if(rv.length) checks.push({id:'recincomplete',label:'Recovery back to static level',status:'pass'});
+  return {ev,readings,pump,rec,pv,rv,flags,checks,calc,lines:L,blocked,hasBlock:flags.some(f=>f.sev==='block'),boreholes};
+}
+
+const ORIGINAL="Site: Demo farm, Free State (fictional)\nGPS -29.1180 26.2140\nBorehole BH2; percussion drilled 14/09/2026; depth 96 m\nWater strikes at 42 m (~1.5 L/s) and 78 m (rate not recorded)\nCasing 165 mm PVC to 12 m?\nStatic water level 18.4 m before test\nPump test 22/09/2026, start 08:00, pump set at 80 m, start rate 3.5 L/s\nRate changed to 4.0 L/s at 120 min? (technician uncertain)\nElapsed min / water level m\n0 18.4\n10 31.2\n30 38.9\n60 44.6\n60 44.6\n120 49.8\n180 52.1\n240 54.3\nStopped 12:00\nRecovery:\n5 41.0\n15 33.7\n30 28.2\nTechnician: Demo Technician (fictional)";
+const SCEN=[
+ ['Original notes','The technician\'s notes exactly as received.','The notes as received from site. The tool has read them and raised the questions a careful reviewer would ask.',t=>t],
+ ['Technician confirms two doubts','Rate change and casing depth are confirmed.','The technician replies: the pump rate really did change at 120 minutes, and the casing depth is right. Two "uncertain" flags should clear.',t=>t.replace('120 min? (technician uncertain)','120 min').replace('12 m?','12 m')],
+ ['Missing details are added','Measuring reference and the second water strike rate are supplied.','Someone adds where the water level was measured from, and the flow found at 78 m. Two warnings should clear.',t=>t.replace('18.4 m before test','18.4 m below top of casing').replace('(rate not recorded)','(~2.0 L/s)')],
+ ['A reading is corrected','The 240-minute water level changes from 54.3 to 55.2 m.','The final reading is corrected. The headline figure in the report must move, and every line that depends on it.',t=>t.replace('240 54.3','240 55.2')],
+ ['Two readings disagree','The 60-minute reading is entered twice with different values.','A double entry that does not match. This is not safe to guess at, so the tool stops and asks for the technician.',t=>t.replace('60 44.6\n60 44.6','60 44.6\n60 45.9')],
+ ['Rows are out of order','The last reading is moved to the top of the table.','Notes are often typed out of sequence. The tool should still pick the true final reading by time, not by position.',t=>{const a=t.split('\n');const i=a.indexOf('0 18.4');const j=a.indexOf('240 54.3');[a[i],a[j]]=[a[j],a[i]];return a.join('\n')}],
+ ['The starting water level is missing','The resting water level line is deleted.','Without the starting level nothing can be calculated. The tool should refuse rather than guess.',t=>t.replace(/Static water level.*\n/,'')],
+ ['A value is in feet','One level is typed in feet instead of metres.','A mixed-unit mistake. The tool should block the calculation, not silently convert.',t=>t.replace('30 38.9','30 127.6 ft')]
+];
+let cur=0;let custom=false;
+const $=id=>document.getElementById(id);const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ta=$('ta');ta.value=ORIGINAL;let A=analyse(ORIGINAL);const BASE=A;let hl=new Set();let acks={};let reviewer='';let approved=null;
+function fmt(v,dp){return v==null?'-':Number(v).toFixed(dp==null?1:dp)}
+function ref(txt,lines,formula){const ls=[...new Set(lines.filter(Boolean))];return `<span class="ref" data-l="${ls.join(',')}" data-f="${esc(formula||'')}">${esc(txt)}</span>`}
+function srcText(n){const l=A.lines[n-1];return l?l.t:''}
+function lineMarks(){const m={};A.flags.forEach(f=>(f.lines||[]).forEach(n=>{m[n]=(m[n]==='bl'||f.sev==='block')?'bl':(f.sev==='info'&&m[n]?m[n]:(f.sev==='info'?(m[n]||''):'fl'))}));return m}
+function drawEditor(){const n=ta.value.split('\n').length;const mk=lineMarks();let g='',b='';for(let i=1;i<=n;i++){g+=i+'\n';b+=`<div class="${hl.has(i)?'on':(mk[i]||'')}">${esc(ta.value.split('\n')[i-1]||' ')}</div>`}$('gut').textContent=g;$('bk').innerHTML=b;syncScroll()}
+function syncScroll(){$('bk').scrollTop=ta.scrollTop;$('gut').scrollTop=ta.scrollTop;$('bk').scrollLeft=ta.scrollLeft}
+ta.addEventListener('scroll',syncScroll);
+function select(lines,formula){hl=new Set(lines);document.querySelectorAll('.ref').forEach(e=>e.classList.toggle('sel',e.dataset.l===lines.join(',')&&e.dataset.f===formula));
+ const first=lines[0];if(first){ta.scrollTop=Math.max(0,(first-4)*20)}drawEditor();
+ $('trace').innerHTML=lines.length?`${formula?'<div>'+esc(formula)+'</div>':''}`+lines.map(n=>`<div><code>Line ${n}</code> &nbsp;${esc(srcText(n))}</div>`).join(''):'No source line (value is absent from the notes).'}
+document.addEventListener('click',e=>{const r=e.target.closest('.ref');if(r){select(r.dataset.l.split(',').filter(Boolean).map(Number),r.dataset.f);return}const k=e.target.closest('[data-go]');if(k){select(k.dataset.go.split(',').map(Number),'')}});
+function render(){
+ const ev=A.ev,c=A.calc;
+ $('cnt').textContent=`${A.pump.length} pumping rows, ${A.rec.length} recovery rows read`;
+ // checks
+ const nf=A.checks.filter(x=>x.status==='flag').length;
+ $('chsub').textContent=`${A.checks.length} checks run on every edit. ${nf} triggered, ${A.checks.length-nf} passed. A check only appears as a flag when the notes trigger it.`;
+ $('chips').innerHTML=A.checks.map(x=>`<span class="chip ${x.status==='pass'?'ok':x.sev==='block'?'b':x.sev==='info'?'i':'f'}" title="${x.status}">${x.status==='pass'?'&#10003; ':''}${esc(x.label)}</span>`).join('');
+ $('flags').innerHTML=A.flags.length?A.flags.map((f,i)=>{const key=f.id+'|'+f.detail;return `<div class="flag ${f.sev==='block'?'block':f.sev==='info'?'info':''}"><b>${f.sev==='block'?'BLOCKING: ':f.sev==='info'?'NOTE: ':'CHECK: '}${esc(f.title)}</b>${esc(f.detail)}<div class="lk">${f.lines&&f.lines.length?'Source: '+f.lines.map(n=>`<span class="lnk" data-go="${n}">line ${n}</span>`).join(''):'No source line'}</div>${f.sev==='warn'?`<label><input type="checkbox" data-ack="${esc(key)}" ${acks[key]?'checked':''}> Reviewer has seen this</label>`:''}</div>`}).join(''):'<div class="flag info"><b>No flags triggered by these notes.</b>That is not a statement that the data are correct.</div>';
+ document.querySelectorAll('[data-ack]').forEach(el=>el.onchange=()=>{acks[el.dataset.ack]=el.checked;renderGate()});
+ // evidence
+ const row=(k,v,l)=>`<tr><td>${k}</td><td>${v==null||v===''?'<i>not found</i>':esc(v)}${l?` <span class="lnk" data-go="${l}">L${l}</span>`:''}</td></tr>`;
+ $('evid').innerHTML='<table class="ev">'+[
+  row('Site',ev.site&&ev.site.v,ev.site&&ev.site.l),row('GPS',ev.gps&&`${ev.gps.latT}, ${ev.gps.lonT}`,ev.gps&&ev.gps.l),
+  row('Borehole',ev.borehole&&`${ev.borehole.id}${ev.borehole.method?', '+ev.borehole.method:''}${ev.borehole.drilled?', drilled '+ev.borehole.drilled.s:''}${ev.borehole.depth!=null?', depth '+ev.borehole.depth+' m':''}`,ev.borehole&&ev.borehole.l),
+  row('Casing',ev.casing&&`${ev.casing.dia||'?'} mm ${ev.casing.mat||''} to ${ev.casing.depth!=null?ev.casing.depth+' m':'?'}${ev.casing.uncertain?' (uncertain)':''}`,ev.casing&&ev.casing.l),
+  row('Water strikes',ev.strikes.length?ev.strikes.map(s=>`${s.depth} m ${s.rate!=null?'@ '+s.rateT+' L/s':'(no rate)'}`).join('; '):null,ev.strikes[0]&&ev.strikes[0].l),
+  row('Static water level',ev.swl&&`${ev.swl.v} m${ev.swl.datum?' '+ev.swl.datum:' (datum not stated)'}`,ev.swl&&ev.swl.l),
+  row('Pump test',ev.pump&&`${ev.pump.date?ev.pump.date.s:'?'}, start ${ev.pump.start?ev.pump.start.s:'?'}, pump at ${ev.pump.depth!=null?ev.pump.depth+' m':'?'}, start rate ${ev.pump.rate!=null?ev.pump.rateT+' L/s':'?'}`,ev.pump&&ev.pump.l),
+  ...ev.rateChanges.map(r=>row('Rate change',`${r.rate!=null?'to '+r.rateT+' L/s':'rate ?'}${r.t!=null?' at '+r.t+' min':', time ?'}${r.uncertain?' (uncertain)':''}`,r.l)),
+  row('Stopped',ev.stop&&ev.stop.s,ev.stop&&ev.stop.l),row('Technician',ev.tech&&ev.tech.v,ev.tech&&ev.tech.l)].join('')+'</table>';
+ // changes
+ const ch=[];const fk=a=>new Set(a.flags.map(f=>f.id));const bf=fk(BASE),cf=fk(A);
+ const num=(lab,a,b,u)=>{if(a!==b)ch.push(`<div>${lab}: <b>${a==null?'not available':a+' '+u}</b> &rarr; <b class="${b==null?'up':''}">${b==null?'not available':b+' '+u}</b></div>`)};
+ num('Final drawdown',BASE.calc.final&&BASE.calc.final.drawdown,c.final&&c.final.drawdown,'m');num('Residual drawdown (recovery)',BASE.calc.residual&&BASE.calc.residual.value,c.residual&&c.residual.value,'m');
+ num('Pumping rows read',BASE.pump.length,A.pump.length,'');
+ const lab=Object.fromEntries(A.checks.concat(BASE.checks).map(x=>[x.id,x.label]));
+ [...cf].filter(x=>!bf.has(x)).forEach(x=>ch.push(`<div class="up">New flag: ${esc((A.flags.find(f=>f.id===x)||{}).title)}</div>`));
+ [...bf].filter(x=>!cf.has(x)).forEach(x=>ch.push(`<div class="dn">Flag cleared: ${esc((BASE.flags.find(f=>f.id===x)||{}).title)}</div>`));
+ $('chg').innerHTML=ch.length?ch.join(''):'<div style="color:var(--mut)">No difference from the original notes. Edit a line or pick a change above.</div>';
+ renderReport();renderGate();drawEditor();
+}
+function renderReport(){
+ const ev=A.ev,c=A.calc,dp=c.dp||1;let h='';
+ const sw=ev.swl;const datumTxt=sw&&!sw.datum?' <i>(reference datum not stated in the notes)</i>':(sw&&sw.datum?' '+esc(sw.datum):'');
+ h+='<h4>Pumping test summary</h4>';
+ h+=`<p>Site: ${ev.site?ref(ev.site.v,[ev.site.l]):'<i>not recorded</i>'}. ${ev.gps?`Coordinates ${ref(ev.gps.latT+', '+ev.gps.lonT,[ev.gps.l])}.`:''} `;
+ if(ev.borehole)h+=`Borehole ${ref(ev.borehole.id||'?',[ev.borehole.l])}${ev.borehole.depth!=null?`, depth ${ref(ev.borehole.depth+' m',[ev.borehole.l])}`:''}${ev.borehole.drilled?`, drilled ${ref(ev.borehole.drilled.s,[ev.borehole.l])}`:''}. `;
+ if(ev.casing)h+=`Casing ${ev.casing.dia?ref(ev.casing.dia+' mm',[ev.casing.l]):''} ${esc(ev.casing.mat||'')}${ev.casing.depth!=null?' to '+ref(ev.casing.depth+' m',[ev.casing.l]):''}${ev.casing.uncertain?' <b>(technician marked uncertain)</b>':''}. `;
+ h+='</p>';
+ if(ev.strikes.length)h+=`<p>Water strikes recorded: ${ev.strikes.map(s=>`${ref(s.depth+' m',[s.l])} ${s.rate!=null?'('+ref(s.rateT+' L/s',[s.l])+')':'<b>(no rate recorded)</b>'}`).join(', ')}.</p>`;
+ if(ev.pump)h+=`<p>Pump test ${ev.pump.date?ref(ev.pump.date.s,[ev.pump.l]):''}${ev.pump.start?', started '+ref(ev.pump.start.s,[ev.pump.l]):''}${ev.pump.depth!=null?', pump set at '+ref(ev.pump.depth+' m',[ev.pump.l]):''}${ev.pump.rate!=null?', start rate '+ref(ev.pump.rateT+' L/s',[ev.pump.l]):', <b>start rate not recorded</b>'}.${ev.rateChanges.map(r=>` Rate change${r.rate!=null?' to '+ref(r.rateT+' L/s',[r.l]):''}${r.t!=null?' at '+ref(r.t+' min',[r.l]):''}${r.uncertain?' <b>(uncertain)</b>':''}.`).join('')}${ev.stop?' Stopped '+ref(ev.stop.s,[ev.stop.l])+'.':''}</p>`;
+ h+=`<p>Static water level: ${sw?ref(sw.v+' m',[sw.l]):'<b>not recorded</b>'}${datumTxt}.</p>`;
+ if(A.hasBlock&&!c.rows.some(r=>r.dd!=null))h+='<div class="flag block"><b>Calculations withheld</b>Blocking flags above must be resolved in the notes first.</div>';
+ if(c.rows.length){h+=`<table><tr><th>Elapsed (min)</th><th>Water level (m)</th><th>Drawdown (m)</th></tr>`+A.pump.slice().sort((a,b)=>a.t-b.t||a.order-b.order).map(r=>{const ex=r.status!=='valid';const dd=(!A.blocked&&sw)?c.sub(r.wl,sw.v):null;return `<tr class="${ex?'x':''}"><td>${ref(r.t,[r.l])}</td><td>${ref(fmt(r.wl,dp),[r.l])}</td><td>${ex?(r.status==='conflict'?'conflict - not used':'repeat - not used'):(dd==null?'-':ref(fmt(dd,dp),[r.l,sw.l],`${r.wl} - ${sw.v} = ${fmt(dd,dp)} m (drawdown = level - static water level)`))}</td></tr>`}).join('')+'</table>'}
+ if(c.final)h+=`<p><b>Recorded drawdown at the last valid reading</b> (${ref(c.final.reading.t+' min',[c.final.reading.l])}, the greatest elapsed time): ${ref(fmt(c.final.drawdown,dp)+' m',[c.final.reading.l,sw.l],`${c.final.reading.wl} - ${sw.v} = ${fmt(c.final.drawdown,dp)} m, last valid reading by elapsed time`)}${ev.rateChanges.length?' (spans a recorded rate change)':''}.</p>`;
+ else if(c.rows.length||A.pump.length)h+='<p><b>Final drawdown: not stated.</b> See blocking flags.</p>';
+ if(A.rec.length){h+='<p>Recovery: '+A.rv.map(r=>`${ref(r.t+' min',[r.l])} ${ref(fmt(r.wl,dp)+' m',[r.l])}`).join('; ')+'.'+(c.residual?` Residual drawdown at ${ref(c.residual.reading.t+' min',[c.residual.reading.l])}: ${ref(fmt(c.residual.value,dp)+' m',[c.residual.reading.l,sw.l],`${c.residual.reading.wl} - ${sw.v} = ${fmt(c.residual.value,dp)} m`)}${c.residual.pct!=null?' ('+c.residual.pct+'% of maximum drawdown)':''}.`:'')+'</p>'}
+ const open=A.flags.filter(f=>f.sev!=='info');
+ if(open.length)h+='<h4>Items the reviewer must resolve or accept</h4><ul>'+open.map(f=>`<li>${esc(f.title)} ${(f.lines||[]).map(n=>ref('L'+n,[n])).join(' ')}</li>`).join('')+'</ul>';
+ h+='<div class="ph">Interpretation, aquifer assessment, yield recommendation and regulatory position: to be written by the responsible professional. Not generated here.</div>';
+ $('rep').innerHTML=h;
+ const st=$('stamp');if(approved){st.textContent='REVIEWED BY '+approved.name.toUpperCase()+' - '+approved.when;st.className='stamp ok'}else{st.textContent='DRAFT - PROFESSIONAL REVIEW REQUIRED';st.className='stamp'}
+}
+function gateState(){const blocks=A.flags.filter(f=>f.sev==='block').length;const w=A.flags.filter(f=>f.sev==='warn');const un=w.filter(f=>!acks[f.id+'|'+f.detail]).length;return {blocks,un,named:reviewer.trim().length>1}}
+function renderGate(){const g=gateState();const ok=!g.blocks&&!g.un&&g.named;
+ $('gate').innerHTML=`<div style="font-size:13px;color:var(--mut)">${g.blocks?`<div class="up">${g.blocks} blocking flag(s) open.</div>`:''}${g.un?`<div>${g.un} warning(s) not yet acknowledged.</div>`:''}</div><input type="text" id="rv" placeholder="Reviewing professional's name (demo - registration not verified)" value="${esc(reviewer)}"><div style="display:flex;gap:8px;margin-top:6px"><button class="p" id="ap" ${ok?'':'disabled'}>Mark as reviewed</button>${approved?'<button id="wd">Withdraw review</button>':''}</div>${approved?`<div class="sub" style="margin-top:6px">Reviewed by ${esc(approved.name)} at ${approved.when} on the notes as they stand now. Editing the notes withdraws this.</div>`:''}`;
+ $('rv').oninput=e=>{reviewer=e.target.value;const g2=gateState();$('ap').disabled=!(!g2.blocks&&!g2.un&&g2.named)};
+ $('ap').onclick=()=>{approved={name:reviewer.trim(),when:new Date().toLocaleString('en-ZA')};renderReport();renderGate()};
+ if($('wd'))$('wd').onclick=()=>{approved=null;renderReport();renderGate()};
+}
+function update(prev){prev=prev||A;approved=null;A=analyse(ta.value);render();drawScen();drawStep(prev);flashChanged(prev)}
+ta.addEventListener('input',()=>{custom=true;update()});
+$('reset').onclick=()=>{ta.value=ORIGINAL;hl=new Set();acks={};custom=false;cur=0;update()};
+function drawScen(){$('scen').innerHTML=SCEN.map((s,i)=>`<button data-s="${i}" class="${!custom&&i===cur?'on':''}"><b>Step ${i+1} of ${SCEN.length}</b><span>${esc(s[0])}</span><i>${esc(s[1])}</i></button>`).join('')}
+function diffList(P,Q){const out=[];const cmp=(lab,a,b,u)=>{if(a!==b)out.push(`<div><b>${lab}:</b> ${a==null?'not available':a+' '+u} &rarr; <b>${b==null?'not available':b+' '+u}</b></div>`)};
+ cmp('Final drawdown',P.calc.final&&P.calc.final.drawdown,Q.calc.final&&Q.calc.final.drawdown,'m');cmp('Residual drawdown',P.calc.residual&&P.calc.residual.value,Q.calc.residual&&Q.calc.residual.value,'m');cmp('Pumping rows used',P.pv.length,Q.pv.length,'');
+ const k=f=>f.id+'|'+f.detail;const pk=new Set(P.flags.map(k)),qk=new Set(Q.flags.map(k));
+ Q.flags.filter(f=>!pk.has(k(f))).forEach(f=>out.push(`<div class="up"><b>New flag:</b> ${esc(f.title)}</div>`));
+ P.flags.filter(f=>!qk.has(k(f))).forEach(f=>out.push(`<div class="dn"><b>Flag cleared:</b> ${esc(f.title)}</div>`));return out}
+function drawStep(prev){const s=custom?['Your own edit','','You changed the notes by hand.']:SCEN[cur];const d=diffList(prev,A);
+ $('step').innerHTML=`<h2>${custom?'You edited the notes':`Step ${cur+1} of ${SCEN.length}: ${esc(s[0])}`}</h2><p>${esc(custom?'Everything on the right was recalculated from your edit.':s[2])}</p><div class="cg"><b class="h">WHAT JUST CHANGED</b>${d.length?d.join(''):'<div>Nothing moved compared with the previous state.</div>'}</div>`;
+ $('step').classList.remove('new');void $('step').offsetWidth;$('step').classList.add('new')}
+function flashChanged(prev){const k=f=>f.id+'|'+f.detail;const pk=new Set(prev.flags.map(k));
+ document.querySelectorAll('#flags .flag').forEach((el,i)=>{const f=A.flags[i];if(f&&!pk.has(k(f))){el.classList.add('new');el.insertAdjacentHTML('afterbegin','<span class="newtag">NEW</span>')}});
+ const pf=prev.calc.final&&prev.calc.final.drawdown,qf=A.calc.final&&A.calc.final.drawdown;
+ if(pf!==qf)document.querySelectorAll('#rep .ref').forEach(e=>{if(/ m$/.test(e.textContent)&&e.dataset.f&&/last valid/.test(e.dataset.f))e.classList.add('flash')});
+ if(pf!==qf)document.querySelectorAll('#rep p').forEach(p=>{if(/last valid reading/.test(p.textContent))p.classList.add('flash')});
+ const pm={};prev.pv.forEach(r=>pm[r.t]=r.wl);document.querySelectorAll('#rep table tr').forEach((tr,i)=>{if(i>0){const t=tr.children[0].textContent,w=tr.children[1].textContent;if(pm[t]!==undefined&&Number(w)!==pm[t])tr.classList.add('flash')}});
+ $('chips').querySelectorAll('.chip').forEach((el,i)=>{const c=A.checks[i],p=prev.checks.find(x=>x.id===c.id);if(!p||p.status!==c.status)el.classList.add('flash')})}
+
+$('scen').onclick=e=>{const b=e.target.closest('[data-s]');if(!b)return;cur=+b.dataset.s;custom=false;ta.value=SCEN[cur][3](ORIGINAL);hl=new Set();update();$('step').scrollIntoView({block:'nearest',behavior:'smooth'})};
+render();drawScen();drawStep(A);
+</script></body></html>

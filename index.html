@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GTG Field Evidence Check - Demonstration</title>
+<title>FieldProof - Field Evidence Check (Demonstration)</title>
 <style>
 :root{--navy:#0b2a3d;--teal:#0f766e;--ink:#1c2b36;--mut:#5d6f7c;--line:#d7e0e6;--bg:#f3f6f8;--warn:#b45309;--blk:#b91c1c;--ok:#15803d;--hl:#fde68a}
 *{box-sizing:border-box}body{margin:0;font:15px/1.5 -apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
@@ -50,9 +50,9 @@ input[type=text]{font:inherit;padding:6px 8px;border:1px solid var(--line);borde
 footer{padding:14px 20px 28px;color:var(--mut);font-size:12px}
 details summary{cursor:pointer;color:var(--teal);font-size:13px}
 </style></head><body>
-<div class="top"><span>GTG Group - Demonstration</span><span>South African borehole / hydrogeology workflow</span><span>Fictional data only</span></div>
-<div class="hd"><div><b>GTG GROUP</b><small>Precision - Sustainability - Groundbreaking Solutions</small></div><div class="t">Field Evidence Check</div><div class="badge">DEMONSTRATION DATA<br>NOT GTG CUSTOMER DATA</div></div>
-<div class="demo">DEMONSTRATION - FICTIONAL DATA - NOTHING IS CONNECTED TO GTG SYSTEMS - NO REAL MESSAGES ARE SENT</div>
+<div class="top"><span>FieldProof - Demonstration</span><span>South African borehole / hydrogeology workflow</span><span>Fictional data only</span></div>
+<div class="hd"><div><b>KAROO BOREHOLE SURVEYS</b><small>Fictional borehole &amp; hydrogeology company</small></div><div class="t">Field Evidence Check</div><div class="badge">DEMONSTRATION DATA<br>FICTIONAL COMPANY - MADE-UP DATA</div></div>
+<div class="demo">DEMONSTRATION - FICTIONAL DATA - NOTHING IS CONNECTED TO ANY REAL SYSTEM - NO REAL MESSAGES ARE SENT</div>
 <div class="motto"><span class="s">The system prepares</span><span class="a">field notes - structured evidence - checks - draft section</span><span class="s" style="background:#fdeccf;color:#92400e">The professional decides</span><span class="a">interpretation - recommendation - approval</span></div>
 <div class="bar"><span><b>Walk through the story:</b> click a step. Each one edits the technician's notes and the whole page recalculates.</span></div><div class="scn" id="scen"></div><div class="step" id="step"></div>
 <div class="wrap"><div>
@@ -70,7 +70,7 @@ details summary{cursor:pointer;color:var(--teal);font-size:13px}
 </div></div>
 <footer>Prepared by NahaLabs - demonstration only. This tool arranges and checks recorded field data. It does not interpret hydrogeology, predict yield or groundwater presence, or replace SANS 10299 methods and professional sign-off. Calculation shown: drawdown = recorded water level minus recorded static water level.</footer>
 <script>
-/* GTG field-evidence engine. Pure functions, no DOM. Every value derived from input text. */
+/* FieldProof field-evidence engine. Pure functions, no DOM. Every value derived from input text. */
 function analyse(text){
   const raw=String(text||'').split(/\r?\n/);
   const L=raw.map((t,i)=>({n:i+1,t:t.trim(),raw:t}));

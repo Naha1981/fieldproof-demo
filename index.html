@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FieldProof - Field Evidence Check (Demonstration)</title>
+<title>FieldProof - Field Evidence Check</title>
 <style>
 :root{--navy:#0b2a3d;--teal:#0f766e;--ink:#1c2b36;--mut:#5d6f7c;--line:#d7e0e6;--bg:#f3f6f8;--warn:#b45309;--blk:#b91c1c;--ok:#15803d;--hl:#fde68a}
 *{box-sizing:border-box}body{margin:0;font:15px/1.5 -apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
@@ -8,7 +8,7 @@
 .hd{background:var(--navy);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .hd b{letter-spacing:.06em;font-size:20px}.hd small{display:block;color:#9fb6c4;font-size:12px}.hd .t{flex:1;font-size:17px;font-weight:600}
 .badge{border:1px solid #f59e0b;color:#fcd34d;font-size:11px;padding:4px 8px;border-radius:4px;text-align:center}
-.demo{background:#7c2d12;color:#fff;text-align:center;font-weight:700;font-size:12.5px;padding:6px;letter-spacing:.04em}
+.demo{background:#eef0f3;color:#4b5563;text-align:center;font-weight:500;font-size:12.5px;padding:6px;letter-spacing:.04em}
 .motto{background:#fff;border-bottom:1px solid var(--line);padding:10px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:13px}
 .motto .s{background:#e6f2f1;color:var(--teal);padding:3px 9px;border-radius:99px;font-weight:600}.motto .a{color:var(--mut)}
 .bar{padding:10px 20px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.bar span{font-size:12px;color:var(--mut);margin-right:4px}
@@ -50,9 +50,9 @@ input[type=text]{font:inherit;padding:6px 8px;border:1px solid var(--line);borde
 footer{padding:14px 20px 28px;color:var(--mut);font-size:12px}
 details summary{cursor:pointer;color:var(--teal);font-size:13px}
 </style></head><body>
-<div class="top"><span>FieldProof - Demonstration</span><span>South African borehole / hydrogeology workflow</span><span>Fictional data only</span></div>
-<div class="hd"><div><b>KAROO BOREHOLE SURVEYS</b><small>Fictional borehole &amp; hydrogeology company</small></div><div class="t">Field Evidence Check</div><div class="badge">DEMONSTRATION DATA<br>FICTIONAL COMPANY - MADE-UP DATA</div></div>
-<div class="demo">DEMONSTRATION - FICTIONAL DATA - NOTHING IS CONNECTED TO ANY REAL SYSTEM - NO REAL MESSAGES ARE SENT</div>
+<div class="top"><span>FieldProof</span><span>South African borehole / hydrogeology workflow</span><span>Fictional data only</span></div>
+<div class="hd"><div><b>KAROO BOREHOLE SURVEYS</b><small>Fictional borehole &amp; hydrogeology company</small></div><div class="t">Field Evidence Check</div><div class="badge">SAMPLE DATA<br>FICTIONAL COMPANY - MADE-UP DATA</div></div>
+<div class="demo">Sample data. Fictional records.</div>
 <div class="motto"><span class="s">The system prepares</span><span class="a">field notes - structured evidence - checks - draft section</span><span class="s" style="background:#fdeccf;color:#92400e">The professional decides</span><span class="a">interpretation - recommendation - approval</span></div>
 <div class="bar"><span><b>Walk through the story:</b> click a step. Each one edits the technician's notes and the whole page recalculates.</span></div><div class="scn" id="scen"></div><div class="step" id="step"></div>
 <div class="wrap"><div>
@@ -68,7 +68,7 @@ details summary{cursor:pointer;color:var(--teal);font-size:13px}
   <div class="rep" id="rep"></div></div>
  <div class="card"><h3>4. Scientist review gate</h3><div class="sub">The draft cannot be marked reviewed while there are blocking flags, unacknowledged warnings or no named reviewer. Any edit to the notes withdraws a review.</div><div id="gate"></div></div>
 </div></div>
-<footer>Prepared by NahaLabs - demonstration only. This tool arranges and checks recorded field data. It does not interpret hydrogeology, predict yield or groundwater presence, or replace SANS 10299 methods and professional sign-off. Calculation shown: drawdown = recorded water level minus recorded static water level.</footer>
+<footer>Prepared by NahaLabs. Sample data. Fictional records. This tool arranges and checks recorded field data. It does not interpret hydrogeology, predict yield or groundwater presence, or replace SANS 10299 methods and professional sign-off. Calculation shown: drawdown = recorded water level minus recorded static water level.</footer>
 <script>
 /* FieldProof field-evidence engine. Pure functions, no DOM. Every value derived from input text. */
 function analyse(text){
@@ -118,7 +118,7 @@ function analyse(text){
   chk('swl','Static water level recorded',!ev.swl,{sev:'block',title:'Static water level missing',detail:'No static water level line was found, so drawdown cannot be calculated.',lines:[]});
   chk('datum','Water-level datum stated',ev.swl&&!ev.swl.datum,{sev:'warn',title:'Water-level reference datum not stated',detail:'The static water level has no datum (for example below top of casing, or below ground level). Levels are reported as recorded; no datum is assumed.',lines:ev.swl?[ev.swl.l]:[]});
   chk('readings','Pumping readings present',pump.length===0,{sev:'block',title:'No pumping readings found',detail:'No "elapsed minutes, water level" rows were found in the pumping phase. Nothing can be calculated.',lines:[]});
-  chk('multi','Single borehole in record',boreholes.length>1,{sev:'block',title:'More than one borehole in the notes',detail:'Borehole lines: '+boreholes.map(b=>b.id).join(', ')+'. This demo handles one borehole per record; split the notes before use.',lines:boreholes.map(b=>b.l)});
+  chk('multi','Single borehole in record',boreholes.length>1,{sev:'block',title:'More than one borehole in the notes',detail:'Borehole lines: '+boreholes.map(b=>b.id).join(', ')+'. This check handles one borehole per record; split the notes before use.',lines:boreholes.map(b=>b.l)});
   chk('dupident','No repeated identical readings',ident.length>0,{sev:'warn',title:'Repeated identical reading(s)',detail:ident.map(d=>`${d.rows[0].phase[0].toUpperCase()+d.rows[0].phase.slice(1)} reading at ${d.t} min recorded ${d.rows.length} times with the same level (${d.rows[0].wl} m). First entry kept, the repeat is excluded from calculations.`).join(' '),lines:[].concat(...ident.map(d=>d.rows.map(r=>r.l)))});
   chk('dupconf','No conflicting readings at one time',conf.length>0,{sev:'block',title:'Conflicting readings at the same time',detail:conf.map(d=>`${d.rows[0].phase} ${d.t} min has different levels (${d.rows.map(r=>r.wl).join(' vs ')} m). Neither is used; the technician must confirm.`).join(' '),lines:[].concat(...conf.map(d=>d.rows.map(r=>r.l)))});
   const inOrder=readings.every((r,i)=>{ const prev=readings.slice(0,i).filter(p=>p.phase===r.phase).pop(); return !prev||prev.t<=r.t; });
@@ -182,7 +182,7 @@ function analyse(text){
   return {ev,readings,pump,rec,pv,rv,flags,checks,calc,lines:L,blocked,hasBlock:flags.some(f=>f.sev==='block'),boreholes};
 }
 
-const ORIGINAL="Site: Demo farm, Free State (fictional)\nGPS -29.1180 26.2140\nBorehole BH2; percussion drilled 14/09/2026; depth 96 m\nWater strikes at 42 m (~1.5 L/s) and 78 m (rate not recorded)\nCasing 165 mm PVC to 12 m?\nStatic water level 18.4 m before test\nPump test 22/09/2026, start 08:00, pump set at 80 m, start rate 3.5 L/s\nRate changed to 4.0 L/s at 120 min? (technician uncertain)\nElapsed min / water level m\n0 18.4\n10 31.2\n30 38.9\n60 44.6\n60 44.6\n120 49.8\n180 52.1\n240 54.3\nStopped 12:00\nRecovery:\n5 41.0\n15 33.7\n30 28.2\nTechnician: Demo Technician (fictional)";
+const ORIGINAL="Site: Example farm, Free State (fictional)\nGPS -29.1180 26.2140\nBorehole BH2; percussion drilled 14/09/2026; depth 96 m\nWater strikes at 42 m (~1.5 L/s) and 78 m (rate not recorded)\nCasing 165 mm PVC to 12 m?\nStatic water level 18.4 m before test\nPump test 22/09/2026, start 08:00, pump set at 80 m, start rate 3.5 L/s\nRate changed to 4.0 L/s at 120 min? (technician uncertain)\nElapsed min / water level m\n0 18.4\n10 31.2\n30 38.9\n60 44.6\n60 44.6\n120 49.8\n180 52.1\n240 54.3\nStopped 12:00\nRecovery:\n5 41.0\n15 33.7\n30 28.2\nTechnician: Example Technician (fictional)";
 const SCEN=[
  ['Original notes','The technician\'s notes exactly as received.','The notes as received from site. The tool has read them and raised the questions a careful reviewer would ask.',t=>t],
  ['Technician confirms two doubts','Rate change and casing depth are confirmed.','The technician replies: the pump rate really did change at 120 minutes, and the casing depth is right. Two "uncertain" flags should clear.',t=>t.replace('120 min? (technician uncertain)','120 min').replace('12 m?','12 m')],
@@ -262,7 +262,7 @@ function renderReport(){
 }
 function gateState(){const blocks=A.flags.filter(f=>f.sev==='block').length;const w=A.flags.filter(f=>f.sev==='warn');const un=w.filter(f=>!acks[f.id+'|'+f.detail]).length;return {blocks,un,named:reviewer.trim().length>1}}
 function renderGate(){const g=gateState();const ok=!g.blocks&&!g.un&&g.named;
- $('gate').innerHTML=`<div style="font-size:13px;color:var(--mut)">${g.blocks?`<div class="up">${g.blocks} blocking flag(s) open.</div>`:''}${g.un?`<div>${g.un} warning(s) not yet acknowledged.</div>`:''}</div><input type="text" id="rv" placeholder="Reviewing professional's name (demo - registration not verified)" value="${esc(reviewer)}"><div style="display:flex;gap:8px;margin-top:6px"><button class="p" id="ap" ${ok?'':'disabled'}>Mark as reviewed</button>${approved?'<button id="wd">Withdraw review</button>':''}</div>${approved?`<div class="sub" style="margin-top:6px">Reviewed by ${esc(approved.name)} at ${approved.when} on the notes as they stand now. Editing the notes withdraws this.</div>`:''}`;
+ $('gate').innerHTML=`<div style="font-size:13px;color:var(--mut)">${g.blocks?`<div class="up">${g.blocks} blocking flag(s) open.</div>`:''}${g.un?`<div>${g.un} warning(s) not yet acknowledged.</div>`:''}</div><input type="text" id="rv" placeholder="Reviewing professional's name (sample - registration not verified)" value="${esc(reviewer)}"><div style="display:flex;gap:8px;margin-top:6px"><button class="p" id="ap" ${ok?'':'disabled'}>Mark as reviewed</button>${approved?'<button id="wd">Withdraw review</button>':''}</div>${approved?`<div class="sub" style="margin-top:6px">Reviewed by ${esc(approved.name)} at ${approved.when} on the notes as they stand now. Editing the notes withdraws this.</div>`:''}`;
  $('rv').oninput=e=>{reviewer=e.target.value;const g2=gateState();$('ap').disabled=!(!g2.blocks&&!g2.un&&g2.named)};
  $('ap').onclick=()=>{approved={name:reviewer.trim(),when:new Date().toLocaleString('en-ZA')};renderReport();renderGate()};
  if($('wd'))$('wd').onclick=()=>{approved=null;renderReport();renderGate()};
